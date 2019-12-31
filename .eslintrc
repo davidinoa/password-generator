@@ -1,8 +1,5 @@
 {
   "extends": ["fbjs", "eslint-config-prettier"],
-  "rules": {
-    "max-len": ["warn", 91]
-  },
   "overrides": [
     {
       "files": "**/*.+(ts|tsx)",
