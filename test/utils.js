@@ -4,10 +4,10 @@ import { render as rtlRender } from '@testing-library/react'
 
 function render(ui, Provider, options) {
   function Wrapper({ children }) {
-    return Provider ? <Provider>{children}</Provider> : <></>
+    return Provider ? <Provider>{children}</Provider> : <>{children}</>
   }
 
-  Wrapper.propTypes = { children: PropTypes.node }
+  Wrapper.propTypes = { children: PropTypes.node.isRequired }
 
   return rtlRender(ui, { wrapper: Wrapper, ...options })
 }
