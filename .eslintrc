@@ -1,5 +1,12 @@
 {
-  "extends": ["fbjs", "eslint-config-prettier"],
+  "extends": ["airbnb", "eslint-config-prettier"],
+  "rules": {
+    "react/jsx-filename-extension": "off",
+    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" }]
+  },
+  "globals": {
+    "test": "readonly"
+  },
   "overrides": [
     {
       "files": "**/*.+(ts|tsx)",
