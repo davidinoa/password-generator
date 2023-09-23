@@ -4,7 +4,7 @@ import { Contrail_One, Roboto_Mono } from 'next/font/google'
 
 export const metadata: Metadata = {
   title: 'Password Generator',
-  description: 'A secure password/passphrase generator built with React',
+  description: 'Secure random passwords and passphrases',
 }
 
 const contrailOne = Contrail_One({
