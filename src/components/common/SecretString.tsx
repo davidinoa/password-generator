@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { animated, useSpring } from 'react-spring'
 import { generatePassword } from '@/lib/cryptoLogic'
 

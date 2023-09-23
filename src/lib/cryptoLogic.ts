@@ -2,8 +2,10 @@ import { Mode, PasswordParamKey, TParams } from '@/types'
 import wordList from './wordList'
 import { delimiters, modes } from '@/config'
 
-export const getRandomSecure = () =>
-  window.crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32
+export const getRandomSecure = () => {
+  if (typeof window === 'undefined') return 0
+  return window.crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32
+}
 
 export const getRandomElement = <T>(array: T[]) => {
   return array[Math.floor(getRandomSecure() * array.length)]

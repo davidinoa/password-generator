@@ -10,6 +10,8 @@ import ChoiceToggle from '@/components/ChoiceToggle'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import Header from '@/components/Header'
 import { media } from '@/styles/helpers'
+import { getEntropy } from '@/lib/cryptoLogic'
+import StrengthMeter from '@/components/StrengthMeter'
 
 const Styles = styled.div`
   margin: 0 auto;
@@ -24,6 +26,8 @@ export default function Home() {
     localStorageKeys.params,
     initParams
   )
+
+  const entropy = getEntropy(params, mode)
 
   const handleInputChange = (e: InputEvents) => {
     let { name, value, type, checked } = e.currentTarget
@@ -66,6 +70,7 @@ export default function Home() {
             initial={mode}
           />
           <Params mode={mode} values={params} onChange={handleInputChange} />
+          <StrengthMeter entropy={entropy} />
         </main>
       </Styles>
     </ThemeProvider>

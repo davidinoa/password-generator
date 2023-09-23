@@ -25,6 +25,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/styled-components": "^5.1.27"
   }
 }
