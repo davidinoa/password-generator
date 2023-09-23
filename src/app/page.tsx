@@ -10,8 +10,14 @@ import ChoiceToggle from '@/components/ChoiceToggle'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import Header from '@/components/Header'
 import { media } from '@/styles/helpers'
-import { getEntropy } from '@/lib/cryptoLogic'
-import StrengthMeter from '@/components/StrengthMeter'
+import {
+  generatePassphrases,
+  generatePasswords,
+  getEntropy,
+} from '@/lib/cryptoLogic'
+import { useCallback, useEffect, useState } from 'react'
+import Secrets from '@/components/Secrets'
+import dynamic from 'next/dynamic'
 
 const Styles = styled.div`
   margin: 0 auto;
@@ -20,12 +26,20 @@ const Styles = styled.div`
   `}
 `
 
-export default function Home() {
+const StrengthMeter = dynamic(() => import('@/components/StrengthMeter'), {
+  ssr: false,
+})
+
+function Home() {
   const [mode, setMode] = useLocalStorage<Mode>(localStorageKeys.mode, modes.PW)
   const [params, setParams] = useLocalStorage<TParams>(
     localStorageKeys.params,
     initParams
   )
+  const [outputs, setOutputs] = useState<Record<Mode, string[]>>({
+    [modes.PW]: [],
+    [modes.PP]: [],
+  })
 
   const entropy = getEntropy(params, mode)
 
@@ -58,6 +72,26 @@ export default function Home() {
     }))
   }
 
+  const generate = useCallback(() => {
+    // TODO: fix this
+    const generateFunction =
+      mode === modes.PW
+        ? () => generatePasswords(3, params.password)
+        : () => generatePassphrases(3, params.passphrase)
+
+    setOutputs((prev) => {
+      return {
+        ...prev,
+        [mode]: generateFunction(),
+      }
+    })
+  }, [mode, params])
+
+  // TODO: fix this
+  useEffect(() => {
+    generate()
+  }, [generate])
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -71,8 +105,13 @@ export default function Home() {
           />
           <Params mode={mode} values={params} onChange={handleInputChange} />
           <StrengthMeter entropy={entropy} />
+          <Secrets outputs={outputs[mode]} />
         </main>
       </Styles>
     </ThemeProvider>
   )
 }
+
+export default dynamic(() => Promise.resolve(Home), {
+  ssr: false,
+})

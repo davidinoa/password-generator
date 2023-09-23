@@ -7,7 +7,6 @@ import useTheme from '@/hooks/useTheme'
 import CoolFace from '@/images/cool.svg'
 import HappyFace from '@/images/smile.svg'
 import NervousFace from '@/images/eek.svg'
-import { type } from 'os'
 
 const Styles = styled.div`
   display: flex;

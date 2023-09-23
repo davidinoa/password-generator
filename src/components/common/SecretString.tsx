@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { animated, useSpring } from 'react-spring'
 import { generatePassword } from '@/lib/cryptoLogic'
 
@@ -85,7 +85,7 @@ export default function SecretString({
   }, [scramble])
 
   return (
-    <animated.span onClick={scramble}>
+    <animated.span onClick={scramble} suppressHydrationWarning>
       {spring.chars.to((...charCodes) =>
         convertToString(charCodes, alphaNumeric)
       )}
