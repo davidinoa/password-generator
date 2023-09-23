@@ -28,8 +28,8 @@ const theme = {
   meterColors,
   inputBorderRadius: `0.5rem`,
   inputHighlightColor: colors.offBlack,
-  fontFamily: "'Roboto Mono', sans-serif",
-  fontFamilyHeadings: "'Contrail One', sans-serif",
+  fontFamily: 'var(--font-contrail-one), sans-serif',
+  fontFamilyHeadings: 'var(--font-contrail-one), sans-serif',
   borderRadius: '0.2rem',
   media,
 } as const
