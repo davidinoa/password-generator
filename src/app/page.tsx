@@ -1,7 +1,10 @@
 'use client'
 
+import { ThemeProvider } from 'styled-components'
 import { initParams, localStorageKeys, modes } from '@/config'
 import { InputEvents, Mode, TParams } from '@/types'
+import theme from '@/styles/theme'
+import GlobalStyles from '@/styles/global'
 import Params from '@/components/Params'
 import ChoiceToggle from '@/components/ChoiceToggle'
 import useLocalStorage from '@/hooks/useLocalStorage'
@@ -43,13 +46,16 @@ export default function Home() {
   }
 
   return (
-    <main>
-      <ChoiceToggle
-        choices={{ Password: modes.PW, Passphrase: modes.PP }}
-        onToggle={(mode) => setMode(mode)}
-        initial={mode}
-      />
-      <Params mode={mode} values={params} onChange={handleInputChange} />
-    </main>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <main>
+        <ChoiceToggle
+          choices={{ Password: modes.PW, Passphrase: modes.PP }}
+          onToggle={(mode) => setMode(mode)}
+          initial={mode}
+        />
+        <Params mode={mode} values={params} onChange={handleInputChange} />
+      </main>
+    </ThemeProvider>
   )
 }
