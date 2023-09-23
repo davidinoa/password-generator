@@ -1,3 +1,5 @@
+import { DelimiterKey } from './types'
+
 export const strengthsEnum = {
   OK: 'kinda weak',
   GOOD: 'pretty decent',
@@ -14,6 +16,14 @@ export const localStorageKeys = {
   mode: `password-generator-mode`,
 } as const
 
+export const delimiters = {
+  hyphen: '-',
+  period: '.',
+  space: ' ',
+  number: null,
+  noDelimiter: '',
+} as const
+
 export const initParams = {
   [modes.PW]: {
     length: 16,
@@ -24,6 +34,6 @@ export const initParams = {
   },
   [modes.PP]: {
     length: 5,
-    delimiter: 'hyphen',
+    delimiter: 'hyphen' as DelimiterKey,
   },
 }
