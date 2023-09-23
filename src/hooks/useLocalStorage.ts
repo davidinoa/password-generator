@@ -9,6 +9,7 @@ export default function useLocalStorage<TState>(
   if (invalidKey) throw TypeError('Storage key must be a non-empty string.')
 
   const [state, setState] = useState<TState>(() => {
+    if (typeof window === 'undefined') return
     try {
       return JSON.parse(window.localStorage.getItem(key) ?? '') || initialValue
     } catch (err) {
