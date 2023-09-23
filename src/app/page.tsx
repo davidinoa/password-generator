@@ -1,6 +1,6 @@
 'use client'
 
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { initParams, localStorageKeys, modes } from '@/config'
 import { InputEvents, Mode, TParams } from '@/types'
 import theme from '@/styles/theme'
@@ -8,6 +8,15 @@ import GlobalStyles from '@/styles/global'
 import Params from '@/components/Params'
 import ChoiceToggle from '@/components/ChoiceToggle'
 import useLocalStorage from '@/hooks/useLocalStorage'
+import Header from '@/components/Header'
+import { media } from '@/styles/helpers'
+
+const Styles = styled.div`
+  margin: 0 auto;
+  ${media.tablet`
+    max-width: 66rem;
+  `}
+`
 
 export default function Home() {
   const [mode, setMode] = useLocalStorage<Mode>(localStorageKeys.mode, modes.PW)
@@ -48,14 +57,17 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <main>
-        <ChoiceToggle
-          choices={{ Password: modes.PW, Passphrase: modes.PP }}
-          onToggle={(mode) => setMode(mode)}
-          initial={mode}
-        />
-        <Params mode={mode} values={params} onChange={handleInputChange} />
-      </main>
+      <Styles>
+        <Header />
+        <main>
+          <ChoiceToggle
+            choices={{ Password: modes.PW, Passphrase: modes.PP }}
+            onToggle={(mode) => setMode(mode)}
+            initial={mode}
+          />
+          <Params mode={mode} values={params} onChange={handleInputChange} />
+        </main>
+      </Styles>
     </ThemeProvider>
   )
 }

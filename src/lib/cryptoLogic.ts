@@ -21,7 +21,7 @@ type CharKey = keyof Chars
 
 export const generatePassword = (
   length: number,
-  flags: Partial<Record<PasswordParamKey, boolean | number>>
+  flags?: Partial<Record<PasswordParamKey, boolean | number>>
 ) => {
   flags = { upper: true, lower: true, numbers: true, symbols: true, ...flags }
 
