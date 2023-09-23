@@ -32,6 +32,6 @@ const theme = {
   fontFamilyHeadings: "'Contrail One', sans-serif",
   borderRadius: '0.2rem',
   media,
-}
+} as const
 
 export default theme

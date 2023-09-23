@@ -1,8 +1,8 @@
 'use client'
 
-import { ChangeEvent, TouchEvent } from 'react'
 import styled from 'styled-components'
 import theme from '@/styles/theme'
+import { InputEvents, InputTouchEvent } from '@/types'
 
 const { inputHighlightColor } = theme
 const { offBlack, blue } = theme.colors
@@ -59,10 +59,6 @@ const Styles = styled.div`
   }
 `
 
-type InputTouchEvent = TouchEvent<HTMLInputElement>
-type InputChangeEvent = ChangeEvent<HTMLInputElement>
-type InputEvents = InputTouchEvent | InputChangeEvent
-
 type Props = {
   title: string
   label: string
@@ -102,7 +98,7 @@ export default function RangeSlider({
   return (
     <Styles className={className}>
       <label>{label}</label>
-      <span>{value}</span>
+      <span suppressHydrationWarning>{value}</span>
       <input
         type="range"
         title={title}

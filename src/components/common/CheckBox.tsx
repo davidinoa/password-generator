@@ -72,14 +72,16 @@ type InputChangeEvent = ChangeEvent<HTMLInputElement>
 type Props = {
   label: string
   name: string
-  value: string
+  title: string
   checked: boolean
   onChange: (e: InputChangeEvent) => void
+  value?: string
 }
 
 export default function CheckBox({
   label,
   name,
+  title,
   value,
   checked,
   onChange,
@@ -91,6 +93,7 @@ export default function CheckBox({
         <input
           type="checkbox"
           name={name}
+          title={title}
           value={value}
           checked={checked}
           onChange={onChange}
