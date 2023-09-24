@@ -102,7 +102,7 @@ function Home() {
         <Header />
         <main>
           <ChoiceToggle
-            choices={{ Password: modes.PW, Passphrase: modes.PP }}
+            choices={Object.values(modes)}
             onToggle={onChoiceToggle}
             initial={mode}
           />

@@ -2,10 +2,10 @@ import { PropsWithChildren } from 'react'
 import { useTransition, animated, SpringValue } from 'react-spring'
 import styled from 'styled-components'
 import { modes } from '@/config'
-import PasswordParams from '@/components/PasswordParams'
-// import PassphraseParams from '@/components/PassphraseParams'
 import { media } from '@/styles/helpers'
 import { InputEvents, Mode, StyledProps, TParams } from '@/types'
+import PasswordParams from './PasswordParams'
+import PassphraseParams from './PassphraseParams'
 
 const Styles = styled.div`
   background: white;
@@ -57,11 +57,7 @@ export default function Params({ mode, values, onChange }: Props) {
             {item === modes.PW ? (
               <PasswordParams values={values} onChange={onChange} />
             ) : (
-              <div>Passphrase</div>
-              // <PassphraseParams
-              //   values={values}
-              //   onChange={onChange}
-              // />
+              <PassphraseParams values={values} onChange={onChange} />
             )}
           </AnimatedTab>
         )

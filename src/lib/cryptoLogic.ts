@@ -56,7 +56,6 @@ export const generatePassphrase = (
   if (!(params.delimiter in delimiters)) {
     params.delimiter = 'hyphen'
   }
-
   const phrase = new Set<string>()
   while (phrase.size < numWords) phrase.add(getRandomElement(wordList))
   if (params.delimiter === 'number') {

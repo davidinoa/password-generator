@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { media } from '@/styles/helpers'
+import { Mode } from '@/types'
 
 const Styles = styled.div`
   display: flex;
@@ -12,6 +13,7 @@ const Styles = styled.div`
     font-size: 1em;
     font-family: ${(p) => p.theme.fontFamily};
     font-weight: bold;
+    text-transform: capitalize;
     border: none;
     background: none;
     margin: 0;
@@ -36,29 +38,28 @@ const Styles = styled.div`
 `
 
 type Props = {
-  choices: { [key: string]: any }
-  onToggle: (value: any) => void
-  initial: string
+  choices: Mode[]
+  onToggle: (value: Mode) => void
+  initial: Mode
 }
 
 export default function ChoiceToggle({ choices, onToggle, initial }: Props) {
-  const labels = Object.keys(choices)
-  const [selected, setSelected] = useState(initial)
+  const [selected, setSelected] = useState<Mode>(initial)
 
-  const handleClick = (label: string) => {
-    setSelected(label)
-    onToggle(choices[label])
+  const handleClick = (choice: Mode) => {
+    setSelected(choice)
+    onToggle(choice)
   }
 
   return (
     <Styles>
-      {labels.map((label) => (
+      {choices.map((choice) => (
         <button
-          key={label}
-          className={selected === label ? 'selected' : undefined}
-          onClick={() => handleClick(label)}
+          key={choice}
+          className={selected === choice ? 'selected' : undefined}
+          onClick={() => handleClick(choice)}
         >
-          {label}
+          {choice}
         </button>
       ))}
     </Styles>
