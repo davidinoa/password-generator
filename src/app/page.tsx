@@ -19,6 +19,8 @@ import {
   generatePasswords,
   getEntropy,
 } from '@/lib/cryptoLogic'
+import Instructions from '@/components/Instructions'
+import Disclaimer from '@/components/Disclaimer'
 
 const Styles = styled.div`
   margin: 0 auto;
@@ -110,6 +112,8 @@ function Home() {
           <Secrets outputs={outputs[mode]} />
           <RegenerateButton onClick={() => generate(mode, params)} />
         </main>
+        <Instructions />
+        <Disclaimer />
       </Styles>
     </ThemeProvider>
   )
