@@ -45,34 +45,18 @@ export default function SecretString({
   scrambleOnClick = false,
   alphaNumeric = false,
 }: Props) {
-  const from = convertToCharCodeArray(generatePassword(children.length))
-  const to = convertToCharCodeArray(children)
   const precision = 1
   const friction = 50
   const config = {
     config: { precision, friction, duration },
     from: {
-      chars: from,
-    },
-    to: {
-      chars: to,
+      chars: convertToCharCodeArray(children),
     },
   }
 
   const [springs, api] = useSpring(() => config)
-  api.start({
-    config: { duration: 100, precision },
-    to: {
-      chars: convertToCharCodeArray(generatePassword(children.length)),
-    },
-    onRest: () => {
-      api.start({
-        config: { duration: undefined, precision, friction },
-        to: { chars: convertToCharCodeArray(children) },
-      })
-    },
-  })
-  const scramble = useCallback(() => {
+
+  const scramble = () => {
     api.start({
       config: { duration: 100, precision },
       to: {
@@ -85,22 +69,19 @@ export default function SecretString({
         })
       },
     })
-  }, [children, api])
-
+  }
   useEffect(() => {
-    scramble()
-  }, [scramble])
+    !scrambleOnClick && scramble()
+  })
 
   return (
-    <>
-      <animated.span
-        onClick={() => scrambleOnClick && scramble()}
-        suppressHydrationWarning
-      >
-        {springs.chars.to((...charCodes) => {
-          return convertToString(charCodes, alphaNumeric)
-        })}
-      </animated.span>
-    </>
+    <animated.span
+      onClick={() => scrambleOnClick && scramble()}
+      suppressHydrationWarning
+    >
+      {springs.chars.to((...charCodes) => {
+        return convertToString(charCodes, alphaNumeric)
+      })}
+    </animated.span>
   )
 }
