@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { animated, useSpring } from 'react-spring'
+import { animated, useSpring } from '@react-spring/web'
 import { generatePassword } from '@/lib/cryptoLogic'
 
 const convertToCharCodeArray = (string: string) => {
@@ -50,8 +50,6 @@ export default function SecretString({
   const precision = 1
   const friction = 50
   const config = {
-    // low precision since we're interpolating integers
-    // cuts number of operations by ~1/2
     config: { precision, friction, duration },
     from: {
       chars: from,
@@ -61,34 +59,36 @@ export default function SecretString({
     },
   }
 
-  const [spring, setSpring] = useSpring(() => config)
+  const [springs, api] = useSpring(() => config)
 
   const scramble = useCallback(() => {
     if (scrambleOnClick) {
-      setSpring({
+      api.start({
         config: { duration: 100, precision },
         to: {
           chars: convertToCharCodeArray(generatePassword(children.length)),
         },
         onRest: () => {
-          setSpring({
+          api.start({
             config: { duration: undefined, precision, friction },
             to: { chars: convertToCharCodeArray(children) },
           })
         },
       })
     }
-  }, [children, scrambleOnClick, setSpring])
+  }, [children, scrambleOnClick, api])
 
   useEffect(() => {
     scramble()
   }, [scramble])
 
   return (
-    <animated.span onClick={scramble} suppressHydrationWarning>
-      {spring.chars.to((...charCodes) =>
-        convertToString(charCodes, alphaNumeric)
-      )}
-    </animated.span>
+    <>
+      <animated.span onClick={scramble} suppressHydrationWarning>
+        {springs.chars.to((...charCodes) =>
+          convertToString(charCodes, alphaNumeric)
+        )}
+      </animated.span>
+    </>
   )
 }

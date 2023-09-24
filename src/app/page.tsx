@@ -62,8 +62,7 @@ function Home() {
         (num, flag) => (params[mode][flag] ? num + 1 : num),
         0
       )
-      // user should select at least one option
-      if (!value && numChecked === 1) return
+      if (!newValue && numChecked === 1) return
     }
 
     const newParams = {

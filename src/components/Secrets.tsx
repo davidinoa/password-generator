@@ -24,7 +24,7 @@ const Styles = styled.div<StylesProps>`
 `
 
 type SecretStylesProps = {
-  length: number
+  $length: number
   className?: string
 }
 
@@ -32,12 +32,13 @@ const SecretStyles = styled.div<SecretStylesProps>`
   font-family: ${(p) => p.theme.fontFamilyFixed};
   margin-bottom: 0.75em;
   font-size: ${(p) =>
-    p.length < 14 ? '1.75em' : p.length > 38 ? '1.1em' : '1.3em'};
-  height: ${(p) => (p.length < 14 ? '6rem' : p.length > 22 ? '10rem' : '8rem')};
+    p.$length < 14 ? '1.75em' : p.$length > 38 ? '1.1em' : '1.3em'};
+  height: ${(p) =>
+    p.$length < 14 ? '6rem' : p.$length > 22 ? '10rem' : '8rem'};
   ${media.tablet`
     font-size: ${(p: SecretStylesProps) =>
-      p.length < 14 ? '1.75em' : p.length > 35 ? '1.1em' : '1.3em'};
-    height: ${(p: SecretStylesProps) => (p.length < 14 ? '6rem' : '8rem')};
+      p.$length < 14 ? '1.75em' : p.$length > 35 ? '1.1em' : '1.3em'};
+    height: ${(p: SecretStylesProps) => (p.$length < 14 ? '6rem' : '8rem')};
   `}
   line-height: 1.2;
   padding: 0 1rem;
@@ -114,7 +115,7 @@ const Secret = ({ children, copyValue, length }: SecretProps) => {
       onClick={copyAndNotify}
       className={copied ? 'notify' : ''}
       title="Click to copy"
-      length={length}
+      $length={length}
     >
       {children}
     </SecretStyles>
