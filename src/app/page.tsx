@@ -1,23 +1,24 @@
 'use client'
 
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import styled, { ThemeProvider } from 'styled-components'
 import { initParams, localStorageKeys, modes } from '@/config'
 import { InputEvents, Mode, TParams } from '@/types'
 import theme from '@/styles/theme'
-import GlobalStyles from '@/styles/global'
-import Params from '@/components/Params'
-import ChoiceToggle from '@/components/ChoiceToggle'
-import useLocalStorage from '@/hooks/useLocalStorage'
-import Header from '@/components/Header'
 import { media } from '@/styles/helpers'
+import GlobalStyles from '@/styles/global'
+import ChoiceToggle from '@/components/ChoiceToggle'
+import Header from '@/components/Header'
+import Params from '@/components/Params'
+import Secrets from '@/components/Secrets'
+import RegenerateButton from '@/components/RegenerateButton'
+import useLocalStorage from '@/hooks/useLocalStorage'
 import {
   generatePassphrases,
   generatePasswords,
   getEntropy,
 } from '@/lib/cryptoLogic'
-import { useCallback, useEffect, useState } from 'react'
-import Secrets from '@/components/Secrets'
-import dynamic from 'next/dynamic'
 
 const Styles = styled.div`
   margin: 0 auto;
@@ -29,7 +30,6 @@ const Styles = styled.div`
 const StrengthMeter = dynamic(() => import('@/components/StrengthMeter'), {
   ssr: false,
 })
-
 function Home() {
   const [mode, setMode] = useLocalStorage<Mode>(localStorageKeys.mode, modes.PW)
   const [params, setParams] = useLocalStorage<TParams>(
@@ -37,8 +37,8 @@ function Home() {
     initParams
   )
   const [outputs, setOutputs] = useState<Record<Mode, string[]>>({
-    [modes.PW]: [],
-    [modes.PP]: [],
+    [modes.PW]: generatePasswords(3, params.password),
+    [modes.PP]: generatePassphrases(3, params.passphrase),
   })
 
   const entropy = getEntropy(params, mode)
@@ -63,17 +63,19 @@ function Home() {
       // user should select at least one option
       if (!value && numChecked === 1) return
     }
-    setParams((prev) => ({
-      ...prev,
+
+    const newParams = {
+      ...params,
       [mode]: {
-        ...prev[mode],
+        ...params[mode],
         [name]: newValue,
       },
-    }))
+    }
+    setParams(newParams)
+    generate(mode, newParams)
   }
 
-  const generate = useCallback(() => {
-    // TODO: fix this
+  const generate = (mode: Mode, params: TParams) => {
     const generateFunction =
       mode === modes.PW
         ? () => generatePasswords(3, params.password)
@@ -85,12 +87,12 @@ function Home() {
         [mode]: generateFunction(),
       }
     })
-  }, [mode, params])
+  }
 
-  // TODO: fix this
-  useEffect(() => {
-    generate()
-  }, [generate])
+  const onChoiceToggle = (mode: Mode) => {
+    setMode(mode)
+    generate(mode, params)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -100,12 +102,13 @@ function Home() {
         <main>
           <ChoiceToggle
             choices={{ Password: modes.PW, Passphrase: modes.PP }}
-            onToggle={(mode) => setMode(mode)}
+            onToggle={onChoiceToggle}
             initial={mode}
           />
           <Params mode={mode} values={params} onChange={handleInputChange} />
           <StrengthMeter entropy={entropy} />
           <Secrets outputs={outputs[mode]} />
+          <RegenerateButton onClick={() => generate(mode, params)} />
         </main>
       </Styles>
     </ThemeProvider>
